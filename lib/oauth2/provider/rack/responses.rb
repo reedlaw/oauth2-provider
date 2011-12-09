@@ -24,6 +24,10 @@ module OAuth2::Provider::Rack::Responses
     [302, {'Location' => append_to_uri(uri, :code => code)}, []]
   end
 
+  def self.redirect_with_params(params, uri)
+    [302, {'Location' => append_to_uri(uri, params)}, []]
+  end
+
   def insufficient_scope!
     throw_response OAuth2::Provider::Rack::Responses.json_error('insufficient_scope', :status => 403)
   end
