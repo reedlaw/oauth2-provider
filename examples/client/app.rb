@@ -6,7 +6,7 @@ require 'httparty'
 
 CLIENT_ID = 'abcdefgh12345678'
 CLIENT_SECRET = 'secret'
-RESOURCE_HOST = 'http://localhost:3000'
+RESOURCE_HOST = 'http://0.0.0.0:3000'
 
 enable :sessions
 
@@ -33,6 +33,7 @@ helpers do
 end
 
 get '/' do
+  @auth_token = get_with_access_token("/accounts.json")
   haml :home
 end
 
@@ -51,7 +52,7 @@ end
 
 get '/account' do
   if access_token
-    @resource_response = get_with_access_token("/account.json")
+    @resource_response = get_with_access_token("/accounts.json")
     haml :response
   else
     redirect authorize_url
