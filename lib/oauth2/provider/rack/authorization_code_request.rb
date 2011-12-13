@@ -13,7 +13,10 @@ module OAuth2::Provider::Rack
         :expires_at => authorization_expires_at
       )
       code = grant.authorization_codes.create! :redirect_uri => redirect_uri
-      throw_response Responses.redirect_with_code(code.code, redirect_uri)
+      params = {}
+      params[:code] = code.code
+      params = params.merge(@params)
+      throw_response Responses.redirect_with_params(params, redirect_uri)
     end
 
     def grant_existing!(resource_owner = nil)
