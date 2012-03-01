@@ -11,8 +11,12 @@ module OAuth2::Provider::Models::AccessToken
     delegate :scope, :has_scope?, :client, :resource_owner, :to => :authorization
   end
 
-  def initialize(attributes = {}, options = {}, &block)
-    super attributes.reverse_merge(:access_token => self.class.unique_random_token(:access_token), :refresh_token => self.class.unique_random_token(:refresh_token)), options
+  def initialize(*args, &block)
+    super
+    self.access_token ||= self.class.unique_random_token(:access_token)
+    self.refresh_token ||= self.class.unique_random_token(:refresh_token)
+  # def initialize(attributes = {}, options = {}, &block)
+  #   super attributes.reverse_merge(:access_token => self.class.unique_random_token(:access_token), :refresh_token => self.class.unique_random_token(:refresh_token)), options
   end
 
   def as_json(options = {})
